@@ -1,0 +1,3 @@
+colorlog
+homeassistant>=2025.2.4
+ruff
