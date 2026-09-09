@@ -52,15 +52,14 @@ class ElectroholdCoordinator(DataUpdateCoordinator[ElectroholdData]):
     """Coordinator for Electrohold electricity prices."""
 
     def __init__(
-            self,
-            hass: HomeAssistant,
-            entry: ConfigEntry,
-        ) -> None:
+        self,
+        hass: HomeAssistant,
+        entry: ConfigEntry,
+    ) -> None:
         """Initialize the coordinator."""
         self.session = async_get_clientsession(hass)
         self.source_url = entry.data.get(CONF_SOURCE_URL, SOURCE_URL)
         self.vat_rate = entry.data.get(CONF_VAT_RATE, VAT_RATE)
-
 
         super().__init__(
             hass,
@@ -91,7 +90,7 @@ class ElectroholdCoordinator(DataUpdateCoordinator[ElectroholdData]):
                 headers=headers,
                 timeout=30,
             ) as response:
-                if response.status != 200: #noqa: PLR2004
+                if response.status != 200:  # noqa: PLR2004
                     msg = f"Electrohold returned HTTP {response.status}"
                     raise UpdateFailed(msg)
 
@@ -208,10 +207,10 @@ def validate_prices(day_price: float, night_price: float) -> None:
         msg = f"Invalid Night price: {night_price}"
         raise ValueError(msg)
 
-    if day_price >= 10: #noqa: PLR2004
+    if day_price >= 10:  # noqa: PLR2004
         msg = f"Day price is suspiciously high: {day_price}"
         raise ValueError(msg)
 
-    if night_price >= 10: #noqa: PLR2004
+    if night_price >= 10:  # noqa: PLR2004
         msg = f"Night price is suspiciously high: {night_price}"
         raise ValueError(msg)

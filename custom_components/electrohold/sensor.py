@@ -142,8 +142,7 @@ class ElectroholdNightPriceVatSensor(ElectroholdBaseSensor):
     @property
     def native_value(self) -> float:
         """Return Night price including VAT."""
-        return self.coordinator.data.night_price * (1 +
-                                                    self.coordinator.vat_rate / 100)
+        return self.coordinator.data.night_price * (1 + self.coordinator.vat_rate / 100)
 
 
 class ElectroholdCurrentTariffSensor(ElectroholdBaseSensor):

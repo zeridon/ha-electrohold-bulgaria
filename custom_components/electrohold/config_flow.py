@@ -26,7 +26,7 @@ class ElectroholdConfigFlow(ConfigFlow, domain=DOMAIN):
 
         if user_input is not None:
             source_url = user_input.get(CONF_SOURCE_URL) or SOURCE_URL
-            vat_rate  = user_input.get(CONF_VAT_RATE) or VAT_RATE
+            vat_rate = user_input.get(CONF_VAT_RATE) or VAT_RATE
 
             return self.async_create_entry(
                 title="Electrohold Bulgaria",
