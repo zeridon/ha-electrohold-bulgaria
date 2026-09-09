@@ -6,9 +6,9 @@ import logging
 import re
 from dataclasses import dataclass
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from bs4 import BeautifulSoup
-from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import (
     DataUpdateCoordinator,
@@ -16,6 +16,9 @@ from homeassistant.helpers.update_coordinator import (
 )
 
 from .const import DOMAIN, SOURCE_URL, UPDATE_INTERVAL
+
+if TYPE_CHECKING:
+    from homeassistant.core import HomeAssistant
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -71,12 +74,14 @@ class ElectroholdCoordinator(DataUpdateCoordinator[ElectroholdData]):
                 timeout=30,
             ) as response:
                 if response.status != 200:
-                    raise UpdateFailed(f"Electrohold returned HTTP {response.status}")
+                    msg = f"Electrohold returned HTTP {response.status}"
+                    raise UpdateFailed(msg)
 
                 html = await response.text()
 
         except Exception as err:
-            raise UpdateFailed(f"Unable to retrieve Electrohold page: {err}") from err
+            msg = f"Unable to retrieve Electrohold page: {err}"
+            raise UpdateFailed(msg) from err
 
         try:
             day_price, night_price = parse_prices(html)
@@ -144,10 +149,12 @@ def parse_prices(html: str) -> tuple[float, float]:
     night_price = find_price_near_label(visible_text, "Нощна")
 
     if day_price is None:
-        raise ValueError("Unable to find Electrohold Day price")
+        msg = "Unable to find Electrohold Day price"
+        raise ValueError(msg)
 
     if night_price is None:
-        raise ValueError("Unable to find Electrohold Night price")
+        msg = "Unable to find Electrohold Night price"
+        raise ValueError(msg)
 
     validate_prices(day_price, night_price)
 
@@ -176,13 +183,17 @@ def find_price_near_label(text: str, label: str) -> float | None:
 def validate_prices(day_price: float, night_price: float) -> None:
     """Validate parsed prices."""
     if day_price <= 0:
-        raise ValueError(f"Invalid Day price: {day_price}")
+        msg = f"Invalid Day price: {day_price}"
+        raise ValueError(msg)
 
     if night_price <= 0:
-        raise ValueError(f"Invalid Night price: {night_price}")
+        msg = f"Invalid Night price: {night_price}"
+        raise ValueError(msg)
 
     if day_price >= 10:
-        raise ValueError(f"Day price is suspiciously high: {day_price}")
+        msg = f"Day price is suspiciously high: {day_price}"
+        raise ValueError(msg)
 
     if night_price >= 10:
-        raise ValueError(f"Night price is suspiciously high: {night_price}")
+        msg = f"Night price is suspiciously high: {night_price}"
+        raise ValueError(msg)
