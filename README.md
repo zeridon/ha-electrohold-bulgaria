@@ -1,4 +1,4 @@
-# Electrohold Bulgaria for Home Assistant
+# Electrohold Bulgaria Prices for Home Assistant
 
 A Home Assistant custom integration that retrieves regulated electricity prices from Electrohold Bulgaria.
 
@@ -14,6 +14,7 @@ The integration automatically determines whether the current tariff is Днев�
  * Uses Home Assistant's configured timezone.
  * No helpers or automations are required.
  * Keeps the last successfully retrieved price if a later website request fails.
+ * Can manually refresh prices and recalculate current tariff and price.
 
 # Sensors
 
@@ -53,7 +54,7 @@ Open HACS in Home Assistant and search for:
 
 **Electrohold Bulgaria**
 
-If the repository has not yet been added to the HACS default repository list, add it as a custom repository.
+If the repository has not yet been added to the HACS default repository list, add it as a custom repository [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=zeridon&repository=hacs-electrohold-bulgaria&category=integration).
 
 Select:
 
