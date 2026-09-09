@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "documentation": "https://electrohold.bg/bg/sales/domakinstva/snabdyavane-po-regulirani-ceni/",
   "issue_tracker": "https://github.com/zeridon/hacs-electrohold",
-  "codeowners": ["zeridon"],
+  "codeowners": ["@zeridon"],
   "config_flow": true,
   "dependencies": [],
   "requirements": [
