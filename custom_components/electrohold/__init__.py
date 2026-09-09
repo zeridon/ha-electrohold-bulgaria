@@ -1,3 +1,6 @@
+# Copyright (c) 2026 @Zeridon
+# SPDX-License-Identifier: MIT
+
 """The Electrohold Bulgaria integration."""
 
 from __future__ import annotations
@@ -20,7 +23,7 @@ async def async_setup_entry(
     entry: ConfigEntry,
 ) -> bool:
     """Set up Electrohold from a config entry."""
-    coordinator = ElectroholdCoordinator(hass)
+    coordinator = ElectroholdCoordinator(hass, entry)
 
     await coordinator.async_config_entry_first_refresh()
 

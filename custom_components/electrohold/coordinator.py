@@ -1,3 +1,6 @@
+# Copyright (c) 2026 @Zeridon
+# SPDX-License-Identifier: MIT
+
 """Data coordinator for the Electrohold Bulgaria integration."""
 
 from __future__ import annotations
@@ -15,9 +18,17 @@ from homeassistant.helpers.update_coordinator import (
     UpdateFailed,
 )
 
-from .const import DOMAIN, SOURCE_URL, UPDATE_INTERVAL
+from .const import (
+    CONF_SOURCE_URL,
+    CONF_VAT_RATE,
+    DOMAIN,
+    SOURCE_URL,
+    UPDATE_INTERVAL,
+    VAT_RATE,
+)
 
 if TYPE_CHECKING:
+    from homeassistant.config_entries import ConfigEntry
     from homeassistant.core import HomeAssistant
 
 _LOGGER = logging.getLogger(__name__)
@@ -40,9 +51,16 @@ class ElectroholdData:
 class ElectroholdCoordinator(DataUpdateCoordinator[ElectroholdData]):
     """Coordinator for Electrohold electricity prices."""
 
-    def __init__(self, hass: HomeAssistant) -> None:
+    def __init__(
+            self,
+            hass: HomeAssistant,
+            entry: ConfigEntry,
+        ) -> None:
         """Initialize the coordinator."""
         self.session = async_get_clientsession(hass)
+        self.source_url = entry.data.get(CONF_SOURCE_URL, SOURCE_URL)
+        self.vat_rate = entry.data.get(CONF_VAT_RATE, VAT_RATE)
+
 
         super().__init__(
             hass,
@@ -69,11 +87,11 @@ class ElectroholdCoordinator(DataUpdateCoordinator[ElectroholdData]):
 
         try:
             async with self.session.get(
-                SOURCE_URL,
+                self.source_url,
                 headers=headers,
                 timeout=30,
             ) as response:
-                if response.status != 200:
+                if response.status != 200: #noqa: PLR2004
                     msg = f"Electrohold returned HTTP {response.status}"
                     raise UpdateFailed(msg)
 
@@ -190,10 +208,10 @@ def validate_prices(day_price: float, night_price: float) -> None:
         msg = f"Invalid Night price: {night_price}"
         raise ValueError(msg)
 
-    if day_price >= 10:
+    if day_price >= 10: #noqa: PLR2004
         msg = f"Day price is suspiciously high: {day_price}"
         raise ValueError(msg)
 
-    if night_price >= 10:
+    if night_price >= 10: #noqa: PLR2004
         msg = f"Night price is suspiciously high: {night_price}"
         raise ValueError(msg)

@@ -1,3 +1,6 @@
+# Copyright (c) 2026 @Zeridon
+# SPDX-License-Identifier: MIT
+
 """Sensors for Electrohold Bulgaria."""
 
 from __future__ import annotations
@@ -18,10 +21,14 @@ from .const import (
     ATTR_SOURCE,
     ATTR_VAT_RATE,
     DOMAIN,
-    SOURCE_URL,
+    SUMMER_DAY_END_HOUR,
+    SUMMER_DAY_START_HOUR,
+    SUMMER_MONTH_END,
+    SUMMER_MONTH_START,
     TARIFF_DAY,
     TARIFF_NIGHT,
-    VAT_RATE,
+    WINTER_DAY_END_HOUR,
+    WINTER_DAY_START_HOUR,
 )
 from .coordinator import ElectroholdCoordinator
 
@@ -31,7 +38,7 @@ if TYPE_CHECKING:
 
 
 async def async_setup_entry(
-    hass: HomeAssistant,
+    _hass: HomeAssistant,
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
@@ -80,9 +87,9 @@ class ElectroholdBaseSensor(
         data = self.coordinator.data
 
         return {
-            ATTR_SOURCE: SOURCE_URL,
+            ATTR_SOURCE: self.coordinator.source_url,
             ATTR_LAST_UPDATE: data.last_update.isoformat(),
-            ATTR_VAT_RATE: VAT_RATE,
+            ATTR_VAT_RATE: self.coordinator.vat_rate,
         }
 
 
@@ -109,7 +116,7 @@ class ElectroholdDayPriceVatSensor(ElectroholdBaseSensor):
     @property
     def native_value(self) -> float:
         """Return Day price including VAT."""
-        return self.coordinator.data.day_price * (1 + VAT_RATE)
+        return self.coordinator.data.day_price * (1 + self.coordinator.vat_rate / 100)
 
 
 class ElectroholdNightPriceSensor(ElectroholdBaseSensor):
@@ -135,7 +142,8 @@ class ElectroholdNightPriceVatSensor(ElectroholdBaseSensor):
     @property
     def native_value(self) -> float:
         """Return Night price including VAT."""
-        return self.coordinator.data.night_price * (1 + VAT_RATE)
+        return self.coordinator.data.night_price * (1 +
+                                                    self.coordinator.vat_rate / 100)
 
 
 class ElectroholdCurrentTariffSensor(ElectroholdBaseSensor):
@@ -162,7 +170,7 @@ class ElectroholdCurrentTariffSensor(ElectroholdBaseSensor):
         )
 
     @callback
-    def _handle_time_change(self, now: datetime) -> None:
+    def _handle_time_change(self, _now: datetime) -> None:
         """Update when the clock changes."""
         self.async_write_ha_state()
 
@@ -194,7 +202,7 @@ class ElectroholdCurrentPriceSensor(ElectroholdBaseSensor):
         )
 
     @callback
-    def _handle_time_change(self, now: datetime) -> None:
+    def _handle_time_change(self, _now: datetime) -> None:
         """Update when the tariff changes."""
         self.async_write_ha_state()
 
@@ -229,7 +237,7 @@ class ElectroholdCurrentPriceVatSensor(ElectroholdBaseSensor):
         )
 
     @callback
-    def _handle_time_change(self, now: datetime) -> None:
+    def _handle_time_change(self, _now: datetime) -> None:
         """Update when the tariff changes."""
         self.async_write_ha_state()
 
@@ -241,7 +249,7 @@ class ElectroholdCurrentPriceVatSensor(ElectroholdBaseSensor):
         else:
             price = self.coordinator.data.night_price
 
-        return price * (1 + VAT_RATE)
+        return price * (1 + self.coordinator.vat_rate / 100)
 
 
 def get_current_tariff(now: datetime) -> str:
@@ -252,8 +260,8 @@ def get_current_tariff(now: datetime) -> str:
     # April 1 through October 31:
     # Day:   07:00 - 23:00
     # Night: 23:00 - 07:00
-    if 4 <= month <= 10:
-        if 7 <= hour < 23:
+    if SUMMER_MONTH_START <= month <= SUMMER_MONTH_END:
+        if SUMMER_DAY_START_HOUR <= hour < SUMMER_DAY_END_HOUR:
             return TARIFF_DAY
 
         return TARIFF_NIGHT
@@ -261,7 +269,7 @@ def get_current_tariff(now: datetime) -> str:
     # November 1 through March 31:
     # Day:   06:00 - 22:00
     # Night: 22:00 - 06:00
-    if 6 <= hour < 22:
+    if WINTER_DAY_START_HOUR <= hour < WINTER_DAY_END_HOUR:
         return TARIFF_DAY
 
     return TARIFF_NIGHT

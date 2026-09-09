@@ -1,3 +1,6 @@
+# Copyright (c) 2026 @Zeridon
+# SPDX-License-Identifier: MIT
+
 """Tests for Electrohold tariff calculation."""
 
 from datetime import datetime
