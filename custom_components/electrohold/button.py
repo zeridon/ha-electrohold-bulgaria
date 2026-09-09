@@ -28,7 +28,7 @@ class ElectroholdRefreshButton(
 
     _attr_has_entity_name = True
     _attr_name = "Refresh prices"
-    _attr_icon = "mdi:refresh"
+    _attr_icon = "mdi:web-refresh"
     _attr_entity_category = EntityCategory.CONFIG
     _attr_unique_id = "electrohold_refresh_prices"
 
@@ -55,7 +55,7 @@ class ElectroholdRecalculateTariffButton(
 
     _attr_has_entity_name = True
     _attr_name = "Recalculate tariff"
-    _attr_icon = "mdi:clock-refresh-outline"
+    _attr_icon = "mdi:timer-refresh-outline"
     _attr_entity_category = EntityCategory.CONFIG
     _attr_unique_id = "electrohold_recalculate_tariff"
 

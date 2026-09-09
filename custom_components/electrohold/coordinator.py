@@ -14,7 +14,6 @@ from typing import TYPE_CHECKING
 from bs4 import BeautifulSoup
 from homeassistant.core import callback
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
-from homeassistant.helpers.event import async_track_time_change
 from homeassistant.helpers.update_coordinator import (
     DataUpdateCoordinator,
     UpdateFailed,
@@ -71,28 +70,10 @@ class ElectroholdCoordinator(DataUpdateCoordinator[ElectroholdData]):
             always_update=False,
         )
 
-        self._unsub_time_change = async_track_time_change(
-            hass,
-            self._handle_time_change,
-            hour="*",
-            minute=0,
-            second=0,
-        )
-
-    @callback
-    def _handle_time_change(self, _now: datetime) -> None:
-        """Update entities when the hour changes."""
-        self.async_update_listeners()
-
     @callback
     def async_recalculate_tariff(self) -> None:
         """Recalculate time-dependent tariff entities."""
         self.async_update_listeners()
-
-    async def async_shutdown(self) -> None:
-        """Shut down the coordinator."""
-        self._unsub_time_change()
-        await super().async_shutdown()
 
     async def _async_update_data(self) -> ElectroholdData:
         """Fetch and parse Electrohold prices."""

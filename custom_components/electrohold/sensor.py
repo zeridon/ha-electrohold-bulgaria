@@ -12,6 +12,8 @@ from homeassistant.components.sensor import (
     SensorEntity,
     SensorStateClass,
 )
+from homeassistant.core import callback
+from homeassistant.helpers.event import async_track_time_change
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import (
@@ -153,6 +155,25 @@ class ElectroholdCurrentTariffSensor(ElectroholdBaseSensor):
     _attr_state_class = None
     _attr_icon = "mdi:clock-time-four-outline"
 
+    async def async_added_to_hass(self) -> None:
+        """Subscribe to clock changes."""
+        await super().async_added_to_hass()
+
+        self.async_on_remove(
+            async_track_time_change(
+                self.hass,
+                self._handle_time_change,
+                hour="*",
+                minute="0",
+                second=0,
+            )
+        )
+
+    @callback
+    def _handle_time_change(self, _now: datetime) -> None:
+        """Update when the clock changes."""
+        self.async_write_ha_state()
+
     @property
     def native_value(self) -> str:
         """Return current tariff."""
@@ -165,6 +186,25 @@ class ElectroholdCurrentPriceSensor(ElectroholdBaseSensor):
     _attr_name = "Current Price"
     _attr_unique_id = "electrohold_current_price"
     _attr_icon = "mdi:flash"
+
+    async def async_added_to_hass(self) -> None:
+        """Subscribe to clock changes."""
+        await super().async_added_to_hass()
+
+        self.async_on_remove(
+            async_track_time_change(
+                self.hass,
+                self._handle_time_change,
+                hour="*",
+                minute="0",
+                second=0,
+            )
+        )
+
+    @callback
+    def _handle_time_change(self, _now: datetime) -> None:
+        """Update when the clock changes."""
+        self.async_write_ha_state()
 
     @property
     def native_value(self) -> float:
@@ -181,6 +221,25 @@ class ElectroholdCurrentPriceVatSensor(ElectroholdBaseSensor):
     _attr_name = "Current Price incl VAT"
     _attr_unique_id = "electrohold_current_price_incl_vat"
     _attr_icon = "mdi:flash-outline"
+
+    async def async_added_to_hass(self) -> None:
+        """Subscribe to clock changes."""
+        await super().async_added_to_hass()
+
+        self.async_on_remove(
+            async_track_time_change(
+                self.hass,
+                self._handle_time_change,
+                hour="*",
+                minute="0",
+                second=0,
+            )
+        )
+
+    @callback
+    def _handle_time_change(self, _now: datetime) -> None:
+        """Update when the clock changes."""
+        self.async_write_ha_state()
 
     @property
     def native_value(self) -> float:
