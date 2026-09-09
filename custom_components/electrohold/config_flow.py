@@ -24,4 +24,3 @@ class ElectroholdConfigFlow(ConfigFlow, domain=DOMAIN):
             title="Electrohold Bulgaria",
             data={},
         )
-

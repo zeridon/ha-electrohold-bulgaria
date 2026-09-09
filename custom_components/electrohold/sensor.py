@@ -15,8 +15,6 @@ from homeassistant.helpers.event import async_track_time_change
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import (
-    ATTR_EXCL_VAT,
-    ATTR_INCL_VAT,
     ATTR_LAST_UPDATE,
     ATTR_SOURCE,
     ATTR_VAT_RATE,
@@ -264,4 +262,3 @@ def get_current_tariff(now: datetime) -> str:
         return TARIFF_DAY
 
     return TARIFF_NIGHT
-

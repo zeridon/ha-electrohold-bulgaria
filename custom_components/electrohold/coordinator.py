@@ -8,7 +8,6 @@ from dataclasses import dataclass
 from datetime import datetime
 
 from bs4 import BeautifulSoup
-
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import (
@@ -60,8 +59,7 @@ class ElectroholdCoordinator(DataUpdateCoordinator[ElectroholdData]):
                 "Chrome/131.0 Safari/537.36"
             ),
             "Accept": (
-                "text/html,application/xhtml+xml,"
-                "application/xml;q=0.9,*/*;q=0.8"
+                "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
             ),
             "Accept-Language": "bg-BG,bg;q=0.9,en;q=0.8",
         }
@@ -73,16 +71,12 @@ class ElectroholdCoordinator(DataUpdateCoordinator[ElectroholdData]):
                 timeout=30,
             ) as response:
                 if response.status != 200:
-                    raise UpdateFailed(
-                        f"Electrohold returned HTTP {response.status}"
-                    )
+                    raise UpdateFailed(f"Electrohold returned HTTP {response.status}")
 
                 html = await response.text()
 
         except Exception as err:
-            raise UpdateFailed(
-                f"Unable to retrieve Electrohold page: {err}"
-            ) from err
+            raise UpdateFailed(f"Unable to retrieve Electrohold page: {err}") from err
 
         try:
             day_price, night_price = parse_prices(html)
@@ -122,8 +116,7 @@ def parse_prices(html: str) -> tuple[float, float]:
             continue
 
         prices = [
-            float(value.replace(",", "."))
-            for value in PRICE_PATTERN.findall(text)
+            float(value.replace(",", ".")) for value in PRICE_PATTERN.findall(text)
         ]
 
         if not prices:
@@ -171,8 +164,7 @@ def find_price_near_label(text: str, label: str) -> float | None:
     section = text[position : position + 500]
 
     prices = [
-        float(value.replace(",", "."))
-        for value in PRICE_PATTERN.findall(section)
+        float(value.replace(",", ".")) for value in PRICE_PATTERN.findall(section)
     ]
 
     if not prices:
@@ -194,4 +186,3 @@ def validate_prices(day_price: float, night_price: float) -> None:
 
     if night_price >= 10:
         raise ValueError(f"Night price is suspiciously high: {night_price}")
-

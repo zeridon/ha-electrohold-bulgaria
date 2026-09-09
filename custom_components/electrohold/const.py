@@ -26,4 +26,3 @@ ATTR_INCL_VAT = "price_incl_vat"
 
 TARIFF_DAY = "Дневна"
 TARIFF_NIGHT = "Нощна"
-

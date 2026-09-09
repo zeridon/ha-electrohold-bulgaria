@@ -39,4 +39,3 @@ async def async_unload_entry(
         entry,
         PLATFORMS,
     )
-
