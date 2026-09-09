@@ -31,6 +31,7 @@ class ElectroholdRefreshButton(
     _attr_name = "Refresh prices"
     _attr_icon = "mdi:refresh"
     _attr_entity_category = EntityCategory.CONFIG
+    _attr_unique_id = "electrohold_refresh_prices"
 
     def __init__(self, coordinator: ElectroholdCoordinator) -> None:
         """Initialize the refresh button."""
