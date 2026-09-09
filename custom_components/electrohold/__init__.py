@@ -16,7 +16,7 @@ if TYPE_CHECKING:
     from homeassistant.core import HomeAssistant
 
 PLATFORMS = [
-    Platform.Button,
+    Platform.BUTTON,
     Platform.SENSOR,
 ]
 
