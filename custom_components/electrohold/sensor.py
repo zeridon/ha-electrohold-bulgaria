@@ -97,7 +97,7 @@ class ElectroholdBaseSensor(
 class ElectroholdDayPriceSensor(ElectroholdBaseSensor):
     """Day price excluding VAT."""
 
-    _attr_name = "Day Price"
+    _attr_translation_key = "day_price"
     _attr_unique_id = "electrohold_day_price"
     _attr_icon = "mdi:weather-sunny"
 
@@ -110,7 +110,7 @@ class ElectroholdDayPriceSensor(ElectroholdBaseSensor):
 class ElectroholdDayPriceVatSensor(ElectroholdBaseSensor):
     """Day price including VAT."""
 
-    _attr_name = "Day Price incl VAT"
+    _attr_translation_key = "day_price_incl_vat"
     _attr_unique_id = "electrohold_day_price_incl_vat"
     _attr_icon = "mdi:weather-sunny"
 
@@ -123,7 +123,7 @@ class ElectroholdDayPriceVatSensor(ElectroholdBaseSensor):
 class ElectroholdNightPriceSensor(ElectroholdBaseSensor):
     """Night price excluding VAT."""
 
-    _attr_name = "Night Price"
+    _attr_translation_key = "night_price"
     _attr_unique_id = "electrohold_night_price"
     _attr_icon = "mdi:weather-night"
 
@@ -136,7 +136,7 @@ class ElectroholdNightPriceSensor(ElectroholdBaseSensor):
 class ElectroholdNightPriceVatSensor(ElectroholdBaseSensor):
     """Night price including VAT."""
 
-    _attr_name = "Night Price incl VAT"
+    _attr_translation_key = "night_price_incl_vat"
     _attr_unique_id = "electrohold_night_price_incl_vat"
     _attr_icon = "mdi:weather-night"
 
@@ -149,7 +149,7 @@ class ElectroholdNightPriceVatSensor(ElectroholdBaseSensor):
 class ElectroholdCurrentTariffSensor(ElectroholdBaseSensor):
     """Current tariff."""
 
-    _attr_name = "Current Tariff"
+    _attr_translation_key = "current_tariff"
     _attr_unique_id = "electrohold_current_tariff"
     _attr_native_unit_of_measurement = None
     _attr_state_class = None
@@ -183,7 +183,7 @@ class ElectroholdCurrentTariffSensor(ElectroholdBaseSensor):
 class ElectroholdCurrentPriceSensor(ElectroholdBaseSensor):
     """Current price excluding VAT."""
 
-    _attr_name = "Current Price"
+    _attr_translation_key = "current_price"
     _attr_unique_id = "electrohold_current_price"
     _attr_icon = "mdi:flash"
 
@@ -218,7 +218,7 @@ class ElectroholdCurrentPriceSensor(ElectroholdBaseSensor):
 class ElectroholdCurrentPriceVatSensor(ElectroholdBaseSensor):
     """Current price including VAT."""
 
-    _attr_name = "Current Price incl VAT"
+    _attr_translation_key = "current_price_incl_vat"
     _attr_unique_id = "electrohold_current_price_incl_vat"
     _attr_icon = "mdi:flash-outline"
 
