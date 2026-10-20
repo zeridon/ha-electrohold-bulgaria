@@ -93,6 +93,10 @@ class ElectroholdBaseSensor(
             ATTR_VAT_RATE: self.coordinator.vat_rate,
         }
 
+    @property
+    def available(self) -> bool:
+        return self.coordinator.data is not None
+
 
 class ElectroholdDayPriceSensor(ElectroholdBaseSensor):
     """Day price excluding VAT."""
