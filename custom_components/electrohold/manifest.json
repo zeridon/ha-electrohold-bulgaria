@@ -7,7 +7,7 @@
   "documentation": "https://electrohold.bg/bg/sales/domakinstva/snabdyavane-po-regulirani-ceni/",
   "integration_type": "service",
   "iot_class": "cloud_polling",
-  "issue_tracker": "https://github.com/zeridon/ha-electrohold",
+  "issue_tracker": "https://github.com/zeridon/ha-electrohold-bulgaria",
   "requirements": [
 	  "beautifulsoup4>=4.13.3"
   ],
